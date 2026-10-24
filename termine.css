@@ -1,0 +1,80 @@
+.appointments-page{background:#f8f7f2}
+.appointments-page .booking-header{background:#f8f7f2;border-bottom:1px solid #d9e6e3}
+.appointments-page .booking-header-inner{min-height:88px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.appointments-page .booking-exit{display:inline-flex;align-items:center;gap:15px;color:#28616a;font-size:12px;font-weight:750;border-bottom:1px solid #a7c6c1;padding-bottom:6px}
+.appointments-page .booking-exit span:last-child{font-size:18px;line-height:1}
+.appointments-main{padding:88px 0 125px}
+.appointments-heading{max-width:860px;margin-bottom:54px}
+.appointments-heading h1{font:400 clamp(55px,5.5vw,79px)/1.04 Georgia,serif;letter-spacing:-.062em;margin:21px 0 22px}
+.appointments-heading h1 em{color:#6da6a0;font-weight:400}
+.appointments-heading p{color:#526e73;max-width:610px;font-size:16px;line-height:1.72;margin:0}
+.appointments-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(335px,.8fr);gap:20px;align-items:stretch}
+.calendar-card{border:1px solid #dce8e5;border-radius:24px;background:#fff;padding:34px 38px 39px;box-shadow:0 23px 54px #0737430b}
+.calendar-top{display:flex;justify-content:space-between;gap:20px;align-items:start}
+.calendar-kicker{font-size:10px;font-weight:800;letter-spacing:.16em;color:#58938e}
+.calendar-top h2{font:400 39px/1.13 Georgia,serif;letter-spacing:-.045em;margin:11px 0 0}
+.calendar-nav{display:flex;gap:7px}
+.calendar-nav button{width:38px;height:38px;background:#fff;border:1px solid #cbdeda;border-radius:50%;font-size:19px;color:#235d66}
+.calendar-nav button:disabled{color:#9eb8b8;background:#f3f7f5;cursor:not-allowed}
+.calendar-nav button:not(:disabled):hover{background:#e9f5f2}
+.calendar-preview{background:#eef6f3;border-left:3px solid #80b3aa;padding:12px 14px;margin:25px 0 31px;font-size:12px;line-height:1.6;color:#496e70}
+.calendar-preview strong{color:#164f56}
+.calendar-month{font-size:14px;font-weight:750;text-transform:capitalize;margin-bottom:15px}
+.calendar-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+.calendar-day{min-height:88px;border:1px solid #d9e8e4;border-radius:12px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;color:#456a70;transition:background .2s,border-color .2s}
+.calendar-day:hover{border-color:#7bb3ab;background:#f4faf8}
+.calendar-day[aria-pressed="true"]{background:#0b5460;color:#fff;border-color:#0b5460}
+.calendar-day span{font-size:11px;text-transform:uppercase;letter-spacing:.09em}
+.calendar-day strong{font:400 25px/1 Georgia,serif}
+.calendar-slots-heading{display:flex;align-items:baseline;justify-content:space-between;gap:15px;border-top:1px solid #dce9e5;margin-top:30px;padding-top:24px}
+.calendar-slots-heading h3{font-size:14px;line-height:1.45;margin:0;font-weight:750}
+.calendar-slots-heading>span{font-size:10px;color:#748d8e;white-space:nowrap}
+.calendar-slots{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:16px}
+.example-slot{min-height:47px;border:1px solid #cbded9;border-radius:9px;background:#fff;color:#245a62;font-size:12px;font-weight:750}
+.example-slot:hover{background:#eff8f5;border-color:#79b3aa}
+.example-slot[aria-pressed="true"]{background:#e3f2ed;border-color:#258376;box-shadow:inset 0 0 0 1px #258376}
+.calendar-detail{color:#637d80;font-size:11px;line-height:1.6;min-height:35px;margin:19px 0 0}
+.appointment-side{position:relative;overflow:hidden;display:flex;flex-direction:column;background:#0b4e5a;color:#f5faf8;padding:39px;border-radius:24px}
+.appointment-side:after{content:"";position:absolute;width:280px;height:280px;border:1px solid #bce0d333;border-radius:50%;top:-80px;right:-75px;pointer-events:none}
+.appointment-side-index{color:#a8d5ce;font-size:10px;font-weight:800;letter-spacing:.17em}
+.appointment-side-icon{color:#beded4;font-size:50px;font-weight:400;margin:35px 0 19px}
+.appointment-side h2{font:400 clamp(35px,3.2vw,47px)/1.13 Georgia,serif;letter-spacing:-.04em;margin:0 0 17px}
+.appointment-side>p{font-size:13px;line-height:1.72;color:#cee5df;max-width:420px;margin:0 0 31px}
+.appointment-facts{border-top:1px solid #709da0}
+.appointment-facts>div{display:flex;justify-content:space-between;gap:15px;padding:15px 0;border-bottom:1px solid #709da0}
+.appointment-facts span{color:#a9d2ce;font-size:10px;font-weight:800;letter-spacing:.1em}
+.appointment-facts strong{font-size:12px;font-weight:700;text-align:right}
+.appointment-confirm{display:flex;justify-content:space-between;align-items:center;gap:15px;width:100%;min-height:53px;margin-top:auto;border:0;border-radius:9px;padding:0 18px;background:#b8d6d0;color:#315f63;font-weight:750;font-size:12px;cursor:not-allowed}
+.appointment-confirm span{font-size:18px}
+.appointment-side .appointment-side-note{font-size:10px;color:#a7cbc6;line-height:1.55;margin:12px 0 0}
+.appointments-page .booking-footer{background:#073743;color:#d1e9e5;padding:26px 0;font-size:11px}
+.appointments-page .booking-footer .wrap{display:flex;justify-content:space-between;gap:20px}
+.appointments-page .booking-footer a{text-decoration:underline;text-underline-offset:4px}
+@media(max-width:1000px){.appointments-grid{grid-template-columns:1fr}.appointment-side{min-height:500px}.appointment-confirm{margin-top:25px}}
+@media(max-width:650px){.appointments-page .booking-header-inner{min-height:70px}.appointments-page .booking-exit{font-size:11px;gap:5px}.appointments-page .booking-exit span:first-child{max-width:120px;text-align:right}.appointments-main{padding:64px 0 81px}.appointments-heading{margin-bottom:36px}.appointments-heading h1{font-size:50px}.appointments-heading p{font-size:14px}.calendar-card{padding:24px 19px 26px;border-radius:18px}.calendar-top h2{font-size:32px}.calendar-preview{font-size:11px;margin:22px 0 24px}.calendar-days{gap:4px}.calendar-day{min-height:69px;border-radius:8px}.calendar-day span{font-size:9px}.calendar-day strong{font-size:22px}.calendar-slots{grid-template-columns:repeat(2,1fr)}.calendar-slots-heading{display:block}.calendar-slots-heading>span{display:block;margin-top:5px}.appointment-side{min-height:0;padding:30px 25px;border-radius:18px}.appointment-side h2{font-size:39px}}
+@media(prefers-reduced-motion:reduce){.calendar-day{transition:none}}
+.contact-steps{list-style:none;padding:0;margin:29px 0 36px;border-top:1px solid #dce9e5}
+.contact-steps li{display:grid;grid-template-columns:42px 1fr;gap:16px;padding:22px 0;border-bottom:1px solid #dce9e5}
+.contact-steps li>span{font:400 21px Georgia,serif;color:#6da6a0}
+.contact-steps h3{margin:0 0 6px;font-size:16px}
+.contact-steps p{margin:0;color:#5a7478;font-size:12px;line-height:1.65}
+.calendar-card>h2{font:400 39px/1.13 Georgia,serif;letter-spacing:-.045em;margin:11px 0 0}
+.contact-cta{display:inline-flex;align-items:center;justify-content:space-between;gap:30px;background:#0a5560;color:white;border-radius:9px;padding:17px 19px;font-size:12px;font-weight:750}
+.contact-cta span{font-size:19px}
+.orientation-context{display:grid;grid-template-columns:1fr 1fr;gap:0 22px;margin:25px 0 3px;border-top:1px solid #dce9e5}
+.orientation-context>div{display:flex;flex-direction:column;gap:4px;padding:13px 0;border-bottom:1px solid #dce9e5}
+.orientation-context span{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#698286}
+.orientation-context strong{font-size:12px;line-height:1.45}
+.orientation-form{margin-top:24px;padding-top:0;border-top:0}
+.orientation-form .callback-fields{grid-template-columns:1fr 1fr}
+.orientation-form .orientation-consent{margin-top:21px}
+.orientation-submit{border:0;width:100%;margin-top:19px;cursor:pointer}
+.orientation-submit:disabled{opacity:.65;cursor:wait}
+.orientation-success{margin-top:32px;padding:34px;background:#edf7f4;border-radius:15px}
+.orientation-success>span{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:#0a5560;color:#fff;margin-bottom:20px}
+.orientation-success h2{font:400 35px/1.1 Georgia,serif;margin:0 0 11px}
+.orientation-success p{color:#587478;font-size:13px;line-height:1.65}
+.orientation-success a{display:inline-block;margin-top:10px;border-bottom:1px solid #0a5560;font-size:12px;font-weight:750;padding-bottom:4px}
+.orientation-form [hidden],.orientation-success[hidden],.orientation-context[hidden]{display:none!important}
+@media(max-width:650px){.orientation-context,.orientation-form .callback-fields{grid-template-columns:1fr}.orientation-context>div{padding:11px 0}}
+@media(max-width:380px){.appointments-heading h1{font-size:clamp(34px,11.5vw,42px)}.appointments-page .booking-header-inner{gap:8px}.appointments-page .booking-exit span:first-child{max-width:84px}}
