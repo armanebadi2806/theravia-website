@@ -24,7 +24,10 @@ const tabs = [...document.querySelectorAll('[data-service]')];
 const format = TheraViaPreise.format;
 let activeService = 'einzel';
 
-function selectOffer() { window.location.assign(window.TheraViaI18n?TheraViaI18n.url('kontakt.html'):'kontakt.html'); }
+function selectOffer(service, count) {
+  sessionStorage.setItem('theravia.bookingSelection', JSON.stringify({angebot: service, paket: String(count), direct: true}));
+  window.location.assign(window.TheraViaI18n?TheraViaI18n.url('buchung.html'):'buchung.html');
+}
 
 function renderPrices() {
   const service = services[activeService];
@@ -53,7 +56,7 @@ function renderPrices() {
       <div class="price-amount"><strong>${format(total)}</strong><span>Gesamtpreis</span></div>
       <div class="price-math">${comparison}</div>
       <ul><li>${plan.count} × ${activeService === 'einzel' ? '50' : '70'} Minuten</li><li>Online und persönlich abgestimmt</li><li>Sieben Gesprächssprachen</li></ul>
-      <button type="button" data-book="${plan.count}">${plan.count === 1 ? 'Termin anfragen' : 'Paket anfragen'} <span aria-hidden="true">↗</span></button>
+      <button type="button" data-book="${plan.count}">${plan.count === 1 ? 'Einzeltermin buchen' : 'Paket auswählen'} <span aria-hidden="true">↗</span></button>
     </article>`;
   }).join('');
   grid.querySelectorAll('[data-book]').forEach(button => button.addEventListener('click', () => selectOffer(activeService, button.dataset.book)));

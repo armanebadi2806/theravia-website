@@ -1,1 +1,73 @@
-<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url=kontakt.html"><title>TheraVia</title></head><body><a href="kontakt.html">Kontakt</a></body></html>
+<!doctype html>
+<html lang="de">
+<head>
+  <script src="i18n-boot.js?v=original-879a32666e"></script>
+  <meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src &#x27;self&#x27;; base-uri &#x27;none&#x27;; object-src &#x27;none&#x27;; form-action &#x27;none&#x27;; img-src &#x27;self&#x27; data:; style-src &#x27;self&#x27; &#x27;unsafe-inline&#x27;; connect-src &#x27;self&#x27;"><meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Prüfe deine Auswahl und den geplanten Buchungsablauf bei TheraVia.">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#f9f8f4">
+  <title>Buchung prüfen – TheraVia</title>
+  <link rel="icon" type="image/png" href="assets/theravia-icon.png">
+  <link rel="stylesheet" href="styles.css?v=original-02ac79e3e9">
+  <link rel="stylesheet" href="buchung.css?v=original-a044b52261">
+  <script src="preise.js?v=original-4b07dadac8" defer></script>
+  <script src="buchung.js?v=original-32c5dedb10" defer></script>
+<link rel="stylesheet" href="i18n.css?v=original-22d3bb0ec1"><script src="locales/catalog.js?v=original-2c8fd64f1b" defer></script><script src="i18n.js?v=original-66014f01d6" defer></script><script src="contact.js?v=original-c3d01b593d" defer></script></head>
+<body class="booking-page">
+  <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+  <div class="preview-note">Konzeptvorschau · Buchung und Zahlung sind noch nicht aktiv</div>
+  <header class="booking-header"><div class="wrap booking-header-inner">
+    <a class="brand" href="index.html" aria-label="TheraVia – zur Startseite"><img src="assets/theravia-icon.png" alt=""><span>TheraVia</span></a>
+    <a class="booking-exit" href="kosten.html#preise"><span>Zurück zu den Preisen</span><span aria-hidden="true">↗</span></a>
+  </div></header>
+  <main id="inhalt" class="booking-main">
+    <div class="wrap booking-grid">
+      <div class="booking-copy">
+        <span class="section-label">DEIN NÄCHSTER SCHRITT</span>
+        <h1>In Ruhe prüfen.<br><em>Dann entscheiden.</em></h1>
+        <p class="booking-lead">Du weißt bereits, welches Angebot du möchtest? Dann kannst du deine Auswahl hier prüfen und sicher bezahlen – mit oder ohne vorheriges Orientierungsgespräch.</p>
+        <a class="booking-calendar-link booking-orientation-first" href="index.html#fragebogen">Noch kein Gespräch geführt? Kostenlos anfragen <span aria-hidden="true">↗</span></a>
+        <div class="booking-timeline" aria-label="Geplanter Ablauf">
+          <div class="booking-timeline-item current"><span>01</span><div><h2>Auswahl prüfen</h2><p>Gesprächsform, Umfang und verbindlichen Gesamtpreis in Ruhe ansehen.</p></div></div>
+          <div class="booking-timeline-item"><span>02</span><div><h2>Sicher bezahlen</h2><p>Die Zahlung wird über den sicheren Stripe Checkout abgewickelt.</p></div></div>
+          <div class="booking-timeline-item"><span>03</span><div><h2>Termin abstimmen</h2><p>Wir melden uns innerhalb von 24 Stunden und vereinbaren den passenden Gesprächstermin.</p></div></div>
+        </div>
+      </div>
+      <aside class="booking-summary" aria-labelledby="booking-summary-title">
+        <div class="booking-summary-top"><span>THERAVIA / DEINE AUSWAHL</span><span aria-hidden="true">✦</span></div>
+        <h2 id="booking-summary-title">Dein Angebot</h2>
+        <div id="booking-selection" class="booking-selection" aria-live="polite"></div>
+        <div class="booking-price"><span id="booking-price-label">Verbindlicher Gesamtpreis</span><strong id="booking-total">Noch nicht festgelegt</strong><p id="booking-tax-note">Die steuerliche Einordnung richtet sich nach der konkreten Leistung.</p><p id="booking-price-preview" class="booking-price-preview">Der ausgewiesene Betrag ist der im Checkout zu zahlende Gesamtpreis.</p></div>
+        <form id="callback-form" class="callback-form" novalidate>
+          <h3>Wie erreichen wir dich?</h3>
+          <p>Nach bestätigter Zahlung melden wir uns innerhalb von 24 Stunden persönlich zur Terminabstimmung. Bitte beschreibe hier keine gesundheitlichen Anliegen.</p>
+          <div class="callback-fields"><label>Vor- und Nachname<input name="name" autocomplete="name" required maxlength="120"></label><label>E-Mail-Adresse<input name="email" type="email" autocomplete="email" required maxlength="254"></label><label>Telefonnummer<input name="phone" type="tel" autocomplete="tel" required maxlength="40" inputmode="tel"></label><label>Gut erreichbar<select name="callbackWindow" required><option value="">Bitte auswählen</option><option value="werktag">Werktags 17–22 Uhr</option><option value="wochenende">Wochenende 10–18 Uhr</option><option value="flexibel">Flexibel</option></select></label><label>Gesprächssprache<select name="language" required><option value="">Bitte auswählen</option><option>Deutsch</option><option>Dari</option><option>Farsi</option><option>Englisch</option><option>Türkisch</option><option>Russisch</option><option>Arabisch</option></select></label><label>Altersgruppe<select name="ageGroup" required><option value="">Bitte auswählen</option><option value="erwachsen">Erwachsene Person (18+)</option><option value="minderjaehrig">Kind oder jugendliche Person (10–17)</option></select></label></div>
+          <p class="callback-data-note">Deine Kontaktangaben werden nur an TheraVia übertragen und dort verschlüsselt gespeichert. Stripe erhält keine angekreuzten Anliegen oder Freitexte.</p>
+          <label class="callback-consent"><input name="guardian" type="checkbox"><span>Falls die Anfrage eine minderjährige Person betrifft: Ich bin sorgeberechtigt.</span></label>
+          <label>Rechnungsanschrift<textarea name="billingAddress" minlength="8" maxlength="1000" placeholder="Straße und Hausnummer, Postleitzahl und Ort" required></textarea></label><label class="callback-consent"><input name="terms" type="checkbox" required><span>Ich habe die <a href="bedingungen.html" target="_blank" rel="noopener">Beratungsbedingungen</a> und die <a href="widerruf.html" target="_blank" rel="noopener">Widerrufsinformationen</a> gelesen und stimme den Beratungsbedingungen zu.</span></label>
+          <label class="callback-consent"><input name="privacy" type="checkbox" required><span>Die <a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzhinweise</a> zur Buchung habe ich gelesen.</span></label>
+          <label class="callback-consent"><input name="earlyStart" type="checkbox"><span>Optional: Ich verlange ausdrücklich einen Beginn der Beratung vor Ablauf der Widerrufsfrist.</span></label>
+          <label class="callback-consent"><input name="earlyAcknowledgement" type="checkbox"><span>Bei einem solchen vorzeitigen Beginn ist mir bekannt, dass mein Widerrufsrecht unter den gesetzlichen Voraussetzungen mit vollständiger Vertragserfüllung erlischt.</span></label>
+          <p id="callback-status" class="callback-status" role="status" aria-live="polite"></p>
+          <button class="booking-pay" type="submit" disabled>Mit Stripe bezahlen <span aria-hidden="true">↗</span></button>
+        </form>
+        <div class="booking-promise"><span aria-hidden="true">✓</span><p>Wir melden uns nach bestätigter Zahlung innerhalb von 24 Stunden zur Terminabstimmung. Wenn du noch unsicher bist, kannst du vor der Buchung kostenfrei ein Orientierungsgespräch anfragen.</p></div>
+        <p class="booking-lock">Stripe wird erst aktiviert, wenn die Endpreise und Vertragsinformationen fachlich und steuerlich freigegeben sind. Deine Kontaktangaben werden in dieser Vorschau nicht übertragen.</p>
+        <a class="booking-calendar-link" href="index.html#fragebogen">Kostenloses Orientierungsgespräch anfragen <span aria-hidden="true">↗</span></a>
+      </aside>
+    </div>
+    <div class="wrap booking-details">
+      <div><span class="section-label">GUT ZU WISSEN</span><h2>Alles Wichtige vor der Zahlung.</h2></div>
+      <div class="booking-details-list">
+        <div><h3>Wer begleitet mich?</h3><p>Die Beratung übernehmen Psycholog:innen mit Hochschulabschluss. Die fachliche und sprachliche Passung wird persönlich geprüft.</p></div>
+        <div><h3>Wie vereinbaren wir den Termin?</h3><p>Das 15-minütige Orientierungsgespräch vereinbaren wir nach deiner kostenlosen Anfrage. Nach bestätigter Zahlung melden wir uns innerhalb von 24 Stunden zur persönlichen Terminabstimmung. Gespräche sind Montag bis Freitag von 17 bis 22 Uhr sowie Samstag und Sonntag von 10 bis 18 Uhr vorgesehen.</p></div>
+        <div><h3>Was ist mit meiner Versicherung?</h3><p>TheraVia ist ein Selbstzahlerangebot. Privatversicherte sollten eine mögliche Erstattung vor der Buchung direkt mit ihrer Versicherung klären.</p></div>
+      </div>
+    </div>
+  </main>
+  <footer class="booking-footer"><div class="wrap"><span>© TheraVia · lokale Konzeptvorschau</span><a href="index.html#fragen">Häufige Fragen</a></div></footer>
+<nav class="public-legal-links" aria-label="Rechtliche Informationen"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="bedingungen.html">Beratungsbedingungen</a><a href="widerruf.html">Widerruf</a></nav>
+<a class="phone-cta" data-phone-link href="tel:+4917661880751" aria-labelledby="phone-cta-label phone-cta-number"><span class="phone-cta-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.1 3H4.5C3.7 3 3 3.7 3.1 4.5 4 13.2 10.8 20 19.5 20.9c.8.1 1.5-.6 1.5-1.4v-2.6c0-.6-.4-1.2-1-1.4l-3-1c-.5-.2-1.1 0-1.5.4l-1.3 1.3a15.6 15.6 0 0 1-6.4-6.4l1.3-1.3c.4-.4.6-1 .4-1.5l-1-3c-.2-.6-.8-1-1.4-1Z"/></svg></span><span class="phone-cta-copy"><strong id="phone-cta-label">Fragen? Ruf uns an.</strong><bdi id="phone-cta-number" data-phone-number>0176 61880751</bdi></span></a>
+</body>
+</html>

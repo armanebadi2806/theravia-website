@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src &#x27;self&#x27;; base-uri &#x27;none&#x27;; object-src &#x27;none&#x27;; form-action &#x27;none&#x27;; img-src &#x27;self&#x27; data:; style-src &#x27;self&#x27; &#x27;unsafe-inline&#x27;; connect-src &#x27;self&#x27;"><meta name="referrer" content="no-referrer"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive"><meta name="theme-color" content="#062f39">
+  <title>Praxisportal – TheraVia</title>
+  <link rel="icon" type="image/png" href="assets/theravia-icon.png">
+  <link rel="stylesheet" href="admin.css?v=original-c11d395499"><script src="admin.js?v=original-6e49af01c5" defer></script>
+<link rel="stylesheet" href="portal-extra.css?v=original-4799534f63"><script src="portal-extra.js?v=original-0e52dc5beb" defer></script></head>
+<body>
+  <a class="skip-link" href="#portal-main">Zum Inhalt springen</a>
+  <main id="login-view" class="login-view">
+    <section class="login-copy">
+      <a class="portal-brand" href="index.html"><img src="assets/theravia-icon.png" alt=""><span>TheraVia</span></a>
+      <div><span class="kicker">INTERNES PRAXISPORTAL</span><h1>Versorgung<br><em>gut organisiert.</em></h1><p>Termine, Verfügbarkeiten, Patient:innen und Dokumentation an einem geschützten Ort.</p></div>
+      <p class="login-security"><span>●</span> Verschlüsselte lokale Entwicklungsumgebung</p>
+    </section>
+    <section class="login-panel" aria-labelledby="login-title">
+      <form id="admin-login" class="login-card">
+        <span class="kicker">SICHERER ZUGANG</span><h2 id="login-title">Willkommen zurück</h2><p>Melde dich mit deinem persönlichen Praxiskonto an.</p>
+        <label for="admin-username">Benutzername</label><input id="admin-username" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="64" required autofocus>
+        <small class="login-hint">Groß- und Kleinschreibung ist beim Benutzernamen egal.</small>
+        <label for="admin-password">Passwort</label><input id="admin-password" name="password" type="password" autocomplete="current-password" minlength="4" maxlength="256" required>
+        <button type="button" id="toggle-admin-password" class="password-visibility" aria-controls="admin-password" aria-pressed="false">Passwort anzeigen</button>
+        <p id="login-caps-lock" class="login-hint" role="status" hidden>Die Feststelltaste ist aktiv.</p>
+        <button type="submit">Praxisportal öffnen <span>→</span></button><p id="login-status" class="form-status" role="status"></p>
+      </form>
+    </section>
+  </main>
+
+  <div id="portal" class="portal" hidden>
+    <aside class="sidebar">
+      <a class="portal-brand" href="index.html"><img src="assets/theravia-icon.png" alt=""><span>TheraVia</span></a>
+      <nav id="portal-nav" aria-label="Praxisportal">
+        <button data-view="overview" class="active"><span>⌂</span>Übersicht</button>
+        <button data-view="calendar"><span>□</span>Kalender</button>
+        <button data-view="intakes" data-admin><span>↳</span>Eingang <b id="nav-intake-count">0</b></button>
+        <button data-view="patients"><span>◉</span>Patient:innen</button>
+        <button data-view="messages"><span>✉</span>Nachrichten <b id="nav-chat-count" hidden>0</b></button>
+        <button data-view="availability"><span>◷</span>Verfügbarkeiten</button>
+        <button data-view="team" data-admin><span>◇</span>Team &amp; Rollen</button>
+        <button data-view="revenue" data-revenue><span>€</span>Umsätze</button>
+        <button data-view="packages"><span>▣</span>Pakete &amp; Zahlungen</button><button data-view="operations" data-admin><span>⚙</span>Betrieb &amp; Recht</button><button data-view="activity" data-admin><span>≡</span>Aktivitäten</button>
+      </nav>
+      <div class="sidebar-foot"><div class="user-avatar" id="user-avatar">A</div><div><strong id="user-name">–</strong><span id="user-role">–</span></div><button id="admin-logout" title="Abmelden" aria-label="Abmelden">↗</button></div>
+    </aside>
+
+    <header class="mobile-head"><button id="menu-button" aria-label="Menü öffnen">☰</button><span>TheraVia Praxisportal</span><button id="mobile-logout" aria-label="Abmelden">↗</button></header>
+    <main id="portal-main" class="portal-main" tabindex="-1">
+      <div class="topline"><div><span id="today-label"></span><span class="secure-badge">● Geschützt</span></div><button id="quick-button" class="primary-btn">+ Neuer Termin</button></div>
+
+      <section class="view active" data-page="overview">
+        <div class="page-heading"><div><span class="kicker">PRAXIS IM BLICK</span><h1>Guten Tag, <em id="welcome-name">Arman.</em></h1><p>Alles Wichtige für die nächsten Schritte an einem Ort.</p></div></div>
+        <div id="overview-stats" class="stat-grid"></div>
+        <div class="dashboard-grid"><section class="panel panel-wide"><div class="panel-head"><div><span class="kicker">HEUTE &amp; DEMNÄCHST</span><h2>Termine</h2></div><button class="text-btn" data-go="calendar">Kalender öffnen →</button></div><div id="next-appointments"></div></section><section class="panel"><div class="panel-head"><div><span class="kicker">NÄCHSTER MONAT</span><h2>Verfügbarkeiten</h2></div></div><div id="availability-pulse"></div></section></div>
+      </section>
+
+      <section class="view" data-page="calendar"><div class="page-heading compact"><div><span class="kicker">TERMINPLANUNG</span><h1>Kalender</h1><p>Termine zuweisen, öffnen und den Behandlungsverlauf direkt erreichen.</p></div><button class="primary-btn" data-open="appointment" data-admin>+ Termin anlegen</button></div><div class="calendar-toolbar"><button id="month-prev" aria-label="Vorheriger Monat">←</button><h2 id="calendar-month"></h2><button id="month-next" aria-label="Nächster Monat">→</button><button id="month-today">Heute</button></div><div id="calendar-grid" class="calendar-grid"></div></section>
+
+      <section class="view" data-page="intakes"><div class="page-heading compact"><div><span class="kicker">NEUE KONTAKTE</span><h1>Eingang</h1><p>Kostenlose Orientierungsgespräche und bestätigte Buchungen in Patient:innenakten übernehmen.</p></div></div><div class="filter-row"><input id="intake-search" type="search" placeholder="Name, Sprache oder Anliegen suchen"><select id="intake-filter"><option value="open">Offen</option><option value="all">Alle</option><option value="converted">Übernommen</option></select></div><div id="intake-list" class="card-list"></div></section>
+
+      <section class="view" data-page="patients"><div class="page-heading compact"><div><span class="kicker">VERSORGUNG</span><h1>Patient:innen</h1><p>Kontaktdaten, Termine, Vorinformationen und Behandlungsdokumentation.</p></div><button class="primary-btn" data-open="patient" data-admin>+ Patient:in</button></div><div class="filter-row"><input id="patient-search" type="search" placeholder="Name, Sprache oder Anliegen suchen"><select id="patient-filter"><option value="active">Aktiv</option><option value="unassigned">Nicht zugewiesen</option><option value="all">Alle</option></select></div><div id="patient-list" class="patient-list"></div></section>
+
+      <section class="view" data-page="messages"><div class="page-heading compact"><div><span class="kicker">INTERNER AUSTAUSCH</span><h1>Nachrichten</h1><p>Direkt und vertraulich mit deinem Team schreiben.</p></div></div><div class="chat-layout"><aside class="chat-contacts panel"><div class="chat-panel-heading"><div><span class="kicker">TEAM</span><h2>Kontakte</h2></div><span id="chat-contact-count" class="chat-count"></span></div><div id="chat-contact-list" role="list" aria-label="Teammitglieder"></div></aside><section class="chat-conversation panel" aria-label="Chatverlauf"><div id="chat-header" class="chat-header"><div class="chat-peer-avatar">T</div><div><b>Teamnachrichten</b><span>Wähle ein Teammitglied aus.</span></div></div><div id="chat-messages" class="chat-messages" aria-live="polite"><div class="empty">Deine Teamgespräche erscheinen hier.</div></div><form id="chat-compose" class="chat-compose" hidden><label class="sr-only" for="chat-message">Nachricht</label><textarea id="chat-message" name="text" rows="1" maxlength="4000" placeholder="Nachricht schreiben …" required></textarea><button class="primary-btn" type="submit" aria-label="Nachricht senden">Senden <span aria-hidden="true">→</span></button><small>Interne Nachrichten · keine Patientendaten oder Dokumente senden</small></form></section></div></section>
+
+      <section class="view" data-page="availability"><div class="page-heading compact"><div><span class="kicker">PLANUNG BIS ZUM 15.</span><h1>Verfügbarkeiten</h1><p>Ein Tag, ein Klick: Markiere, wann du im Folgemonat Termine übernehmen kannst.</p></div></div><div id="availability-summary"></div><section class="panel availability-panel"><div class="availability-toolbar"><div><span class="kicker">KALENDERFREIGABE</span><h2 id="availability-month"></h2></div><label data-admin>Behandler:in<select id="availability-practitioner"></select></label><button id="release-button" class="secondary-btn">Monat freigeben</button></div><div class="availability-legend"><span><i class="legend-free"></i> Frei</span><span><i class="legend-busy"></i> Nicht verfügbar</span><span><i class="legend-empty"></i>Noch offen</span></div><div id="availability-calendar" class="availability-calendar"></div><p class="availability-hint">Werktags schlagen wir 17–22 Uhr vor, am Wochenende 10–18 Uhr. Du kannst die Zeiten beim Markieren anpassen.</p></section><section class="panel team-release-panel" data-admin><div class="panel-head"><div><span class="kicker">TEAMSTATUS</span><h2>Monatsfreigaben</h2></div></div><div id="release-status"></div></section></section>
+
+      <section class="view" data-page="team"><div class="page-heading compact"><div><span class="kicker">ZUGRIFF &amp; VERANTWORTUNG</span><h1>Team &amp; Rollen</h1><p>Persönliche Zugänge und passende Berechtigungen für jede behandelnde Person.</p></div><button class="primary-btn" data-open="team">+ Teammitglied</button></div><div class="role-explainer"><div><b>Admin</b><span>Team, Zuweisungen, Termine und Umsätze</span></div><div><b>Psycholog:in</b><span>Eigene Akten und Gesprächsdokumentation</span></div></div><div id="team-list" class="team-grid"></div></section>
+
+      <section class="view" data-page="revenue"><div class="page-heading compact"><div><span class="kicker">ZAHLUNGEN</span><h1>Umsätze</h1><p>Bestätigte Zahlungseingänge abzüglich erfasster Erstattungen. Bei Behandler:innen: anteiliger Paketwert der selbst abgeschlossenen Gespräche; keine Honorar- oder Auszahlungsabrechnung.</p></div></div><div id="revenue-stats" class="stat-grid"></div><section class="panel"><div class="panel-head"><div><span class="kicker">MONATLICHE ENTWICKLUNG</span><h2>Zahlungseingänge</h2></div></div><div id="revenue-chart" class="revenue-chart"></div><div id="revenue-list"></div></section></section>
+
+      <section class="view" data-page="activity"><div class="page-heading compact"><div><span class="kicker">NACHVOLLZIEHBARKEIT</span><h1>Aktivitäten</h1><p>Wichtige Aktionen werden mit Zeitpunkt und ausführender Person protokolliert.</p></div></div><section class="panel"><div id="activity-list" class="timeline"></div></section></section>
+<section class="view" data-page="packages"><div class="page-heading"><div><span class="kicker">BESTELLUNGEN &amp; GUTHABEN</span><h1>Pakete &amp; Zahlungen</h1><p>Freie, reservierte und genutzte Gespräche im Überblick.</p></div><button id="new-purchase" class="primary-btn" data-admin>+ Bestellung anlegen</button></div><div id="package-list"></div><section class="panel" data-admin><h2>Rechnungen</h2><p>Unveränderliche Belege zum Öffnen und Drucken.</p><div id="invoice-list"></div><h2>Erstattungen</h2><div id="refund-list"></div></section></section>
+<section class="view" data-page="operations"><div class="page-heading"><div><span class="kicker">BETRIEB &amp; VERANTWORTUNG</span><h1>Betrieb &amp; Recht</h1><p>Gesicherte Daten, Unternehmensangaben und dokumentierte Datenschutzanfragen.</p></div></div><section class="panel"><h2>Systemstatus</h2><div class="practice-actions"><button id="refresh-operations" class="secondary-btn">Status laden</button><button id="create-backup" class="primary-btn">Sicherung erstellen &amp; prüfen</button></div><div id="operations-status" role="status">Status laden, um Sicherungen und Datenzustand zu prüfen.</div></section><section class="panel"><h2>Unternehmen &amp; Veröffentlichung</h2><p>Die Absageregel gilt bis 24 Stunden vorher kostenfrei. Spätere Absagen werden einzeln geprüft. Fehlende Angaben verhindern die Freigabe.</p><form id="business-form"><div id="business-fields"></div><p role="status"></p><button type="submit" class="primary-btn">Angaben speichern</button></form></section><section class="panel"><h2>Datenschutzanfragen</h2><div id="privacy-list"></div></section></section>
+    </main>
+  </div>
+
+  <dialog id="form-dialog"><div class="dialog-shell"><div class="dialog-head"><div><span id="dialog-kicker" class="kicker"></span><h2 id="dialog-title"></h2></div><button id="dialog-close" type="button" aria-label="Schließen">×</button></div><div id="dialog-content"></div></div></dialog>
+  <aside id="patient-drawer" class="patient-drawer" aria-hidden="true"><div class="drawer-head"><div><span class="kicker">PATIENTENAKTE</span><h2 id="drawer-title"></h2></div><button id="drawer-close" aria-label="Akte schließen">×</button></div><div id="drawer-content"></div></aside><div id="drawer-backdrop" class="drawer-backdrop" hidden></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+<nav class="public-legal-links" aria-label="Rechtliche Informationen"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="bedingungen.html">Beratungsbedingungen</a><a href="widerruf.html">Widerruf</a></nav>
+</body>
+</html>
