@@ -1,4 +1,5 @@
-let consentVersion=null;fetch('/api/business',{cache:'no-store'}).then(r=>r.json()).then(r=>{consentVersion=r.version}).catch(()=>{});
+const paymentRequest=(...args)=>window.TheraViaBackend?TheraViaBackend.request(...args):fetch(...args);
+let consentVersion=null;paymentRequest('/api/business',{cache:'no-store'}).then(r=>r.json()).then(r=>{consentVersion=r.version}).catch(()=>{});
 const selectionNode = document.getElementById('booking-selection');
 document.querySelector('.booking-exit').addEventListener('click', event => {
   if (!document.referrer) return;
@@ -89,7 +90,7 @@ if (!valid) {
 
   // The static preview has no payment endpoint. A production server may expose
   // only approved, tax-inclusive Stripe prices through this endpoint.
-  fetch('/api/checkout-config', {cache:'no-store'})
+  paymentRequest('/api/checkout-config', {cache:'no-store'})
     .then(response => response.ok ? response.json() : null)
     .then(config => {
       const item = config?.catalog?.[sku];
@@ -129,7 +130,7 @@ callbackForm.addEventListener('submit', async event => {
   payButton.disabled = true;
   setStatus('Sicherer Checkout wird vorbereitet …');
   try {
-    const response = await fetch('/api/checkout', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sku,contact,uiLocale:window.TheraViaI18n?.language||'de',intake:{source:'direct'},billingAddress:callbackForm.elements.billingAddress.value,terms:callbackForm.elements.terms.checked,privacy:callbackForm.elements.privacy.checked,consentVersion,earlyStart:callbackForm.elements.earlyStart.checked,earlyAcknowledgement:callbackForm.elements.earlyAcknowledgement.checked})});
+    const response = await paymentRequest('/api/checkout', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sku,contact,uiLocale:window.TheraViaI18n?.language||'de',intake:{source:'direct'},billingAddress:callbackForm.elements.billingAddress.value,terms:callbackForm.elements.terms.checked,privacy:callbackForm.elements.privacy.checked,consentVersion,earlyStart:callbackForm.elements.earlyStart.checked,earlyAcknowledgement:callbackForm.elements.earlyAcknowledgement.checked})});
     const result = await response.json();
     if (!response.ok || !result.url || new URL(result.url).hostname !== 'checkout.stripe.com') throw new Error(result.error || 'Checkout konnte nicht gestartet werden.');
     window.location.assign(result.url);
