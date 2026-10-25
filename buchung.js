@@ -133,7 +133,7 @@ callbackForm.addEventListener('submit', async event => {
   payButton.disabled = true;
   setStatus('Sicherer Checkout wird vorbereitet …');
   try {
-    const response = await paymentRequest('/api/checkout', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sku,contact,uiLocale:window.TheraViaI18n?.language||'de',intake:{source:'direct'},billingAddress:callbackForm.elements.billingAddress.value,terms:callbackForm.elements.terms.checked,privacy:callbackForm.elements.privacy.checked,consentVersion,earlyStart:callbackForm.elements.earlyStart.checked,earlyAcknowledgement:callbackForm.elements.earlyAcknowledgement.checked})});
+    const response = await paymentRequest('/api/checkout', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sku,contact,uiLocale:window.TheraViaI18n?.language||'de',intake:{source:'direct'},billingAddress:callbackForm.elements.billingStreet.value.trim()+'\n'+callbackForm.elements.billingPostalCode.value.trim()+' '+callbackForm.elements.billingCity.value.trim(),terms:callbackForm.elements.terms.checked,privacy:callbackForm.elements.privacy.checked,consentVersion,earlyStart:callbackForm.elements.earlyStart.checked,earlyAcknowledgement:callbackForm.elements.earlyAcknowledgement.checked})});
     const result = await response.json();
     if(response.ok&&result.confirmationUrl){
       const confirmation=new URL(result.confirmationUrl);

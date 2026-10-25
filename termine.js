@@ -1,3 +1,4 @@
+const orientationRequest=(...args)=>window.TheraViaBackend?TheraViaBackend.request(...args):fetch(...args);
 const form = document.getElementById('orientation-form');
 const context = document.getElementById('orientation-context');
 const statusNode = document.getElementById('orientation-status');
@@ -7,7 +8,7 @@ const submitButton = form.querySelector('.orientation-submit');
 let consentVersion=null;
 let requestKey=sessionStorage.getItem('theravia.orientationRequestKey')||crypto.randomUUID();
 sessionStorage.setItem('theravia.orientationRequestKey',requestKey);
-fetch('/api/business',{cache:'no-store'}).then(response=>{if(!response.ok)throw new Error();return response.json();}).then(result=>{consentVersion=result.version;}).catch(()=>{submitButton.disabled=true;setStatus('Die Online-Anfrage ist noch nicht freigeschaltet. Bitte versuche es später erneut.',true);});
+orientationRequest('/api/business',{cache:'no-store'}).then(response=>{if(!response.ok)throw new Error();return response.json();}).then(result=>{consentVersion=result.version;}).catch(()=>{submitButton.disabled=true;setStatus('Die Online-Anfrage ist noch nicht freigeschaltet. Bitte versuche es später erneut.',true);});
 
 let questionnaire = null;
 try {
@@ -75,7 +76,7 @@ form.addEventListener('submit', async event => {
   submitButton.disabled = true;
   setStatus('Deine Anfrage wird sicher übermittelt …');
   try {
-    const response = await fetch('/api/orientation', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    const response = await orientationRequest('/api/orientation', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
     const result = await response.json();
     if (!response.ok || !result.requested) throw new Error(result.error || 'Die Anfrage konnte nicht gesendet werden.');
     form.hidden = true;

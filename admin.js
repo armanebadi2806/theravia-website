@@ -39,7 +39,7 @@ function toast(message, error = false){
 }
 
 async function api(url, options = {}){
-  const response = await fetch(url, {credentials:'same-origin', cache:'no-store', ...options});
+  const response = await (window.TheraViaPortalTransport?.request||fetch)(url, {credentials:'same-origin', cache:'no-store', ...options});
   let result = {};
   try { result = await response.json(); } catch {}
   if (!response.ok) throw new Error(result.error || 'Die Anfrage konnte nicht verarbeitet werden.');

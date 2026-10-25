@@ -3,7 +3,7 @@
  const config=window.TheraViaBackendConfig;
  const local=['localhost','127.0.0.1','[::1]'].includes(location.hostname);
  const remote=!!(config?.enabled&&!local&&/^https:\/\/[a-z0-9]{20}\.supabase\.co\/functions\/v1\/theravia-api$/.test(config.url));
- const routes=new Set(['/api/business','/api/checkout-config','/api/checkout','/api/order-confirmation']);
+ const routes=new Set(['/api/business','/api/checkout-config','/api/checkout','/api/order-confirmation','/api/orientation']);
  async function request(path,options={}){
   if(!remote)return fetch(path,options);
   if(!routes.has(path))throw new Error('Diese Funktion ist noch nicht online angebunden.');
