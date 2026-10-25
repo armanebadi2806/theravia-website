@@ -233,7 +233,7 @@ function switchView(view){
     startChatPolling();
     if(!activeChatPeerId){const first=state?.chatThreads?.[0]?.peerId || state?.users?.find(item=>item.active&&item.id!==state.me.id)?.id;if(first)openChat(first)}
   }else clearInterval(chatPollTimer);
-  $('.sidebar').classList.remove('open'); $('#portal').classList.remove('menu-open'); $('#portal-main').focus({preventScroll:true});
+  $('.sidebar').classList.remove('open'); $('#portal').classList.remove('menu-open');$('#menu-button').setAttribute('aria-expanded','false'); $('#portal-main').focus({preventScroll:true});
 }
 
 function dialog(title,kicker,content){ $('#dialog-title').textContent=title;$('#dialog-kicker').textContent=kicker;$('#dialog-content').innerHTML=content;$('#form-dialog').showModal(); }
@@ -298,7 +298,11 @@ document.addEventListener('click',async event=>{
   const toggle=event.target.closest('[data-toggle-user]');if(toggle){try{await act({action:'toggle_user',userId:toggle.dataset.toggleUser,active:toggle.dataset.active==='true'},'Der Zugang wurde aktualisiert.')}catch(error){toast(error.message,true)}}
   const archive=event.target.closest('[data-archive-patient]');if(archive){try{await act({action:'archive_patient',patientId:archive.dataset.archivePatient},'Die Akte wurde archiviert.')}catch(error){toast(error.message,true)}}
 });
-$('#quick-button').addEventListener('click',()=>openForm('appointment'));$('#menu-button').addEventListener('click',()=>{$('.sidebar').classList.toggle('open');$('#portal').classList.toggle('menu-open')});
+$('#quick-button').addEventListener('click',()=>openForm('appointment'));function closePortalMenu(){ $('.sidebar').classList.remove('open');$('#portal').classList.remove('menu-open');$('#menu-button').setAttribute('aria-expanded','false');$('#menu-button').focus(); }
+$('#menu-button').addEventListener('click',()=>{const open=$('.sidebar').classList.toggle('open');$('#portal').classList.toggle('menu-open',open);$('#menu-button').setAttribute('aria-expanded',String(open));if(open)$('#close-portal-menu').focus();});
+$('#close-portal-menu').addEventListener('click',closePortalMenu);
+$('#portal').addEventListener('click',e=>{if(e.target===$('#portal')&&$('#portal').classList.contains('menu-open'))closePortalMenu();});
+document.addEventListener('keydown',e=>{if(!$('.sidebar').classList.contains('open'))return;if(e.key==='Escape'){closePortalMenu();return}if(e.key==='Tab'){const nodes=[...$('.sidebar').querySelectorAll('a,button')].filter(n=>n.offsetParent!==null&&!n.disabled);if(e.shiftKey&&document.activeElement===nodes[0]){e.preventDefault();nodes.at(-1).focus()}else if(!e.shiftKey&&document.activeElement===nodes.at(-1)){e.preventDefault();nodes[0].focus()}}});
 $('#drawer-close').addEventListener('click',closePatient);$('#drawer-backdrop').addEventListener('click',closePatient);
 $('#dialog-close').addEventListener('click',()=>$('#form-dialog').close());
 $('#patient-search').addEventListener('input',renderPatients);$('#patient-filter').addEventListener('change',renderPatients);$('#intake-search').addEventListener('input',renderIntakes);$('#intake-filter').addEventListener('change',renderIntakes);

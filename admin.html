@@ -5,7 +5,7 @@
   <meta name="robots" content="noindex,nofollow,noarchive"><meta name="theme-color" content="#062f39">
   <title>Praxisportal – TheraVia</title>
   <link rel="icon" type="image/png" href="assets/theravia-icon.png">
-  <link rel="stylesheet" href="admin.css?v=original-c11d395499"><script src="backend-config.js?v=original-1ab9390852" defer></script><script src="portal-transport.js?v=original-79c72be7d9" defer></script><script src="admin.js?v=original-e065be0640" defer></script>
+  <link rel="stylesheet" href="admin.css?v=original-e928edc411"><script src="backend-config.js?v=original-1ab9390852" defer></script><script src="portal-transport.js?v=original-79c72be7d9" defer></script><script src="admin.js?v=original-f51bf577a5" defer></script>
 <link rel="stylesheet" href="portal-extra.css?v=original-4799534f63"><script src="portal-extra.js?v=original-9e5f752eba" defer></script></head>
 <body>
   <a class="skip-link" href="#portal-main">Zum Inhalt springen</a>
@@ -13,7 +13,7 @@
     <section class="login-copy">
       <a class="portal-brand" href="index.html"><img src="assets/theravia-icon.png" alt=""><span>TheraVia</span></a>
       <div><span class="kicker">INTERNES PRAXISPORTAL</span><h1>Versorgung<br><em>gut organisiert.</em></h1><p>Termine, Verfügbarkeiten, Patient:innen und Dokumentation an einem geschützten Ort.</p></div>
-      <p class="login-security"><span>●</span> Verschlüsselte lokale Entwicklungsumgebung</p>
+      <p class="login-security"><span>●</span> Verschlüsselte Daten · Persönlicher Zugang</p>
     </section>
     <section class="login-panel" aria-labelledby="login-title">
       <form id="admin-login" class="login-card">
@@ -29,8 +29,8 @@
   </main>
 
   <div id="portal" class="portal" hidden>
-    <aside class="sidebar">
-      <a class="portal-brand" href="index.html"><img src="assets/theravia-icon.png" alt=""><span>TheraVia</span></a>
+    <aside class="sidebar" id="portal-sidebar">
+      <a class="portal-brand" href="index.html"><img src="assets/theravia-icon.png" alt=""><span>TheraVia</span></a><button type="button" id="close-portal-menu" class="close-portal-menu" aria-label="Menü schließen">×</button>
       <nav id="portal-nav" aria-label="Praxisportal">
         <button data-view="overview" class="active"><span>⌂</span>Übersicht</button>
         <button data-view="calendar"><span>□</span>Kalender</button>
@@ -45,7 +45,7 @@
       <div class="sidebar-foot"><div class="user-avatar" id="user-avatar">A</div><div><strong id="user-name">–</strong><span id="user-role">–</span></div><button id="admin-logout" title="Abmelden" aria-label="Abmelden">↗</button></div>
     </aside>
 
-    <header class="mobile-head"><button id="menu-button" aria-label="Menü öffnen">☰</button><span>TheraVia Praxisportal</span><button id="mobile-logout" aria-label="Abmelden">↗</button></header>
+    <header class="mobile-head"><button id="menu-button" aria-controls="portal-sidebar" aria-expanded="false" aria-label="Menü öffnen">☰</button><span>TheraVia Praxisportal</span><button id="mobile-logout" aria-label="Abmelden">↗</button></header>
     <main id="portal-main" class="portal-main" tabindex="-1">
       <div class="topline"><div><span id="today-label"></span><span class="secure-badge">● Geschützt</span></div><button id="quick-button" class="primary-btn">+ Neuer Termin</button></div>
 
