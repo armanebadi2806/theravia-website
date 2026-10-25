@@ -96,6 +96,9 @@ if (!valid) {
       const item = config?.catalog?.[sku];
       if (!config?.enabled || !item || !Number.isInteger(item.amount) || item.currency !== 'eur') return;
       checkoutAvailable = true;
+      document.querySelector('.preview-note')?.remove();
+      document.querySelector('.booking-footer span').textContent='© TheraVia';
+      document.querySelector('.booking-lock')?.remove();
       priceLabel.textContent = 'Verbindlicher Gesamtpreis';
       proposedTotal.textContent = new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',minimumFractionDigits:0,maximumFractionDigits:2}).format(item.amount / 100);
       previewNote.textContent = 'Dies ist der im Checkout zu zahlende Gesamtpreis.';
@@ -132,6 +135,10 @@ callbackForm.addEventListener('submit', async event => {
   try {
     const response = await paymentRequest('/api/checkout', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sku,contact,uiLocale:window.TheraViaI18n?.language||'de',intake:{source:'direct'},billingAddress:callbackForm.elements.billingAddress.value,terms:callbackForm.elements.terms.checked,privacy:callbackForm.elements.privacy.checked,consentVersion,earlyStart:callbackForm.elements.earlyStart.checked,earlyAcknowledgement:callbackForm.elements.earlyAcknowledgement.checked})});
     const result = await response.json();
+    if(response.ok&&result.confirmationUrl){
+      const confirmation=new URL(result.confirmationUrl);
+      if(confirmation.origin===location.origin&&confirmation.pathname==='/danke.html'&&/^#ref=[a-f0-9]{64}$/.test(confirmation.hash)){window.location.assign(confirmation.href);return;}
+    }
     if (!response.ok || !result.url || new URL(result.url).hostname !== 'checkout.stripe.com') throw new Error(result.error || 'Checkout konnte nicht gestartet werden.');
     window.location.assign(result.url);
   } catch (error) {

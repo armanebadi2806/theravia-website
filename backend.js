@@ -15,7 +15,9 @@
    if(saved?.fingerprint!==fingerprint){saved={fingerprint,key:crypto.randomUUID()};sessionStorage.setItem('theravia.checkoutAttempt',JSON.stringify(saved));}
    body.requestKey=saved.key;options={...options,body:JSON.stringify(body)};
   }
-  return fetch(config.url+path.slice(4),{...options,credentials:'omit',mode:'cors',cache:'no-store'});
+  const response=await fetch(config.url+path.slice(4),{...options,credentials:'omit',mode:'cors',cache:'no-store'});
+  if(path==='/api/checkout'&&response.status===409){try{if((await response.clone().json()).code==='CHECKOUT_EXPIRED')sessionStorage.removeItem('theravia.checkoutAttempt');}catch{}}
+  return response;
  }
  window.TheraViaBackend=Object.freeze({request,remote,clearCheckout(){sessionStorage.removeItem('theravia.checkoutAttempt');}});
 })();

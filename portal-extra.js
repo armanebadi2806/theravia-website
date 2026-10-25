@@ -60,3 +60,14 @@ document.addEventListener('submit',async e=>{const f=e.target;if(!['practice-for
 document.addEventListener('click',e=>{const event=e.target.closest('[data-appointment]');if(!event)return;const a=state.appointments.find(a=>a.id===event.dataset.appointment);if(!a)return;const entries=state.entries.filter(n=>n.appointmentId===a.id);const section=document.createElement('section');section.className='drawer-section appointment-focus';section.innerHTML=`<span class="kicker">AUSGEWÄHLTER TERMIN</span><h3>${esc(dateTime(a.startsAt))}</h3><p>${esc(a.kind)} · ${esc(user(a.practitionerId)?.displayName||'')}</p>${entries.map(n=>`<article class="entry"><b>${esc(entryNames[n.type]||n.type)}</b><p>${esc(n.text)}</p></article>`).join('')||'<p>Noch keine Dokumentation für diesen Termin.</p>'}`;$('#drawer-content').prepend(section);const select=$('#entry-form select[name=appointmentId]');if(select)select.value=a.id;});
 let operationsChecked=false;
 const originalPracticeRender=renderPracticeExtras;renderPracticeExtras=function(){originalPracticeRender();if(isAdmin()){let n=$('#callback-tasks');if(!n){n=document.createElement('section');n.id='callback-tasks';n.className='panel';$('[data-page=overview]').append(n)}const tasks=state.intakes.filter(i=>['paid','requested'].includes(i.status));n.innerHTML='<h2>Persönliche Kontaktaufnahme</h2>'+ (tasks.length?tasks.map(i=>`<div class="package-card"><b>${esc(i.contact.name)}</b><p>${i.kind==='payment'&&Date.now()/1000-i.paidAt>86400?'24-Stunden-Frist überschritten':i.kind==='payment'?'Innerhalb von 24 Stunden nach Zahlung kontaktieren':'Orientierungsgespräch abstimmen'} · ${esc(i.contact.phone)}</p><button class="secondary-btn" data-contacted="${i.id}" data-kind="${i.kind}">Kontakt erfolgt</button></div>`).join(''):'<p>Keine offenen Kontaktaufnahmen.</p>')};if(isAdmin()&&!operationsChecked){operationsChecked=true;loadOperations()}};
+
+// Cloud payment failures remain visible; existing local records stay usable.
+const renderBeforeCloudBilling=renderPracticeExtras;
+renderPracticeExtras=function(){
+ renderBeforeCloudBilling();
+ if(!isAdmin())return;
+ let panel=document.getElementById('cloud-billing-status');
+ if(!panel){panel=document.createElement('section');panel.id='cloud-billing-status';panel.className='panel';document.querySelector('[data-page=overview]').append(panel);}
+ const cloud=state.cloudBilling;
+ panel.innerHTML='<h2>Online-Zahlungen</h2><p>'+esc(!cloud?.enabled?'Cloud-Synchronisierung ist auf diesem Praxisserver nicht aktiviert.':cloud.ok?'Bestätigte Online-Zahlungen synchronisiert · '+dateTime(cloud.lastSuccess):cloud.error||'Die Synchronisierung ist momentan nicht verfügbar.')+'</p>';
+};
