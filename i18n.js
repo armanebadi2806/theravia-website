@@ -23,7 +23,7 @@
  }
  function eligible(element){return element&&!element.closest('script,style,textarea,input,[contenteditable], [data-i18n-ignore],.language-utility select')}
  function localizeNode(node){if(!eligible(node.parentElement))return;const previous=originals.get(node);const original=previous&&previous.rendered===node.data?previous.original:node.data;const rendered=translate(original);originals.set(node,{original,rendered});if(node.data!==rendered)node.data=rendered}
- function url(destination){const u=new URL(destination,location.href);if(u.origin===location.origin&&!u.pathname.endsWith('admin.html'))u.searchParams.set('lang',language);return u.href}
+ function url(destination){if(window.TheraViaSEO)return window.TheraViaSEO.localeUrl(destination,language);const u=new URL(destination,location.href);if(u.origin===location.origin&&!u.pathname.endsWith('admin.html'))u.searchParams.set('lang',language);return u.href}
  const observer=new MutationObserver(records=>{if(records.some(r=>r.type!=='childList'||r.addedNodes.length)&&!queued){queued=true;queueMicrotask(apply)}});
  function apply(){queued=false;observer.disconnect();document.documentElement.lang=language==='prs'?'fa-AF':language;document.documentElement.dir=['prs','fa','ar'].includes(language)?'rtl':'ltr';
   // Freeze implicit option values BEFORE translating their labels.
@@ -49,7 +49,7 @@
  function positionLanguageMenu(){const rect=picker.getBoundingClientRect();const viewport=document.documentElement.clientWidth;const width=Math.min(300,viewport-32);languageMenu.style.width=width+'px';languageMenu.style.left=Math.max(16,Math.min(rect.left,viewport-width-16))+'px';languageMenu.style.top=(rect.bottom+10)+'px';languageMenu.style.maxHeight=Math.max(120,window.innerHeight-rect.bottom-26)+'px';}
  function closeLanguageMenu(restoreFocus=false){languageMenu.hidden=true;picker.setAttribute('aria-expanded','false');if(restoreFocus)picker.focus();}
  function openLanguageMenu(index){languageMenu.hidden=false;picker.setAttribute('aria-expanded','true');positionLanguageMenu();languageOptions[index??languageOptions.findIndex(b=>b.dataset.uiLocale===language)].focus();}
- function selectLanguage(code){if(!locales[code])return;language=code;try{localStorage.setItem('theravia.uiLanguage',code)}catch{}const next=new URL(location.href);next.searchParams.set('lang',code);history.replaceState(null,'',next);apply();document.dispatchEvent(new CustomEvent('theravia:languagechange',{detail:{language:code}}));}
+ function selectLanguage(code){if(!locales[code])return;language=code;try{localStorage.setItem('theravia.uiLanguage',code)}catch{}const next=new URL(window.TheraViaSEO?TheraViaSEO.localeUrl(location.href,code):location.href);if(!window.TheraViaSEO)next.searchParams.set('lang',code);history.replaceState(null,'',next);apply();document.dispatchEvent(new CustomEvent('theravia:languagechange',{detail:{language:code}}));}
  picker.addEventListener('click',()=>languageMenu.hidden?openLanguageMenu():closeLanguageMenu(true));
  picker.addEventListener('keydown',event=>{if(event.key==='ArrowDown'||event.key==='ArrowUp'){event.preventDefault();openLanguageMenu(event.key==='ArrowUp'?languageOptions.length-1:0)}else if(event.key==='Escape')closeLanguageMenu(true)});
  languageMenu.addEventListener('click',event=>{const option=event.target.closest('[data-ui-locale]');if(!option)return;selectLanguage(option.dataset.uiLocale);closeLanguageMenu(true)});
@@ -59,6 +59,6 @@
  window.addEventListener('scroll',()=>{if(!languageMenu.hidden)closeLanguageMenu()},{passive:true});
  window.TheraViaI18n=Object.freeze({t:translate,url,select:selectLanguage,get language(){return language},get conversationLanguage(){return locales[language].conversation}});
  // Independent URLs for every UI language; hosting remains in Germany.
- for(const [code,l] of Object.entries(locales)){const alternate=document.createElement('link');alternate.rel='alternate';alternate.hreflang=code==='prs'?'fa-AF':code;const target=new URL(location.href);target.hash='';target.searchParams.set('lang',code);alternate.href=target.href;document.head.append(alternate)}
+ if(!window.TheraViaSEO)for(const [code,l] of Object.entries(locales)){const alternate=document.createElement('link');alternate.rel='alternate';alternate.hreflang=code==='prs'?'fa-AF':code;const target=new URL(location.href);target.hash='';target.searchParams.set('lang',code);alternate.href=target.href;document.head.append(alternate)}
  apply();
 })();
