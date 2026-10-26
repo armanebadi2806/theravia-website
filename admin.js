@@ -16,6 +16,7 @@ const statusNames = {scheduled:'Geplant',completed:'Abgeschlossen',cancelled:'Ab
 const packageNames = {'einzel-1':'Einzel · 1 Gespräch','einzel-3':'Einzel · 3 Gespräche','einzel-6':'Einzel · 6 Gespräche','einzel-10':'Einzel · 10 Gespräche','paar-1':'Paar · 1 Gespräch','paar-3':'Paar · 3 Gespräche','paar-6':'Paar · 6 Gespräche','paar-10':'Paar · 10 Gespräche','familie-1':'Familie · 1 Gespräch','familie-3':'Familie · 3 Gespräche','familie-6':'Familie · 6 Gespräche','familie-10':'Familie · 10 Gespräche'};
 
 let state = null;
+let portalSessionGeneration = 0;
 let currentView = 'overview';
 let calendarDate = new Date();
 let selectedPatientId = null;
@@ -47,8 +48,10 @@ async function api(url, options = {}){
 }
 
 async function loadState(month = monthKey()){
-  state = await api(`/api/portal/state?month=${encodeURIComponent(month)}`);
-  renderAll();
+  const generation=portalSessionGeneration;
+  const nextState = await api(`/api/portal/state?month=${encodeURIComponent(month)}`);
+  if(generation!==portalSessionGeneration)return;
+  state=nextState;renderAll();
 }
 
 async function act(payload, success){
@@ -73,7 +76,7 @@ function renderAll(){
   $('#quick-button').hidden = !isAdmin();
   renderOverview(); renderCalendar(); renderIntakes(); renderPatients(); renderChats(); renderAvailability(); renderTeam(); renderRevenue(); renderActivity();
   if (typeof renderPracticeExtras==='function') renderPracticeExtras();
-  if (selectedPatientId && patient(selectedPatientId)) openPatient(selectedPatientId, false);
+  if(selectedPatientId){if(patient(selectedPatientId))openPatient(selectedPatientId,false);else closePatient();}
 }
 
 function stat(label, value, note){ return `<article class="stat-card"><small>${esc(label)}</small><strong>${esc(value)}</strong><span>${esc(note)}</span></article>`; }
@@ -106,9 +109,9 @@ function renderCalendar(){
     const day=new Date(start); day.setDate(start.getDate()+i); const key=`${day.getFullYear()}-${String(day.getMonth()+1).padStart(2,'0')}-${String(day.getDate()).padStart(2,'0')}`;
     const events=state.appointments.filter(item=>localDayKey(item.startsAt)===key);
     const today=new Date(); const sameToday=day.toDateString()===today.toDateString();
-    html += `<div class="calendar-day ${day.getMonth()!==month?'outside':''} ${sameToday?'today':''}"><span class="day-number">${day.getDate()}</span>${events.map(item=>{const p=patient(item.patientId);return `<button class="calendar-event ${item.status==='cancelled'?'cancelled':''}" data-patient="${esc(item.patientId)}" data-appointment="${esc(item.id)}"><b>${esc(timeOnly(item.startsAt))}</b> ${esc(p?.name||'Termin')}</button>`}).join('')}</div>`;
+    html += `<div class="calendar-day ${day.getMonth()!==month?'outside':''} ${sameToday?'today':''} ${isAdmin()?'bookable':''}" ${isAdmin()?`data-calendar-day="${key}"`:""}>${isAdmin()?`<button type="button" class="calendar-day-add" data-book-day="${key}" aria-label="Termin am ${esc(plannerLabel(key))} anlegen"><span class="day-number">${day.getDate()}</span><span class="day-plus" aria-hidden="true">+</span></button>`:`<span class="day-number">${day.getDate()}</span>`}${events.map(item=>{const p=patient(item.patientId);return `<button class="calendar-event ${item.status==='cancelled'?'cancelled':''}" data-patient="${esc(item.patientId)}" data-appointment="${esc(item.id)}"><b>${esc(timeOnly(item.startsAt))}</b> ${esc(p?.name||'Termin')}</button>`}).join('')}</div>`;
   }
-  $('#calendar-grid').innerHTML=html;
+  $('#calendar-grid').innerHTML=html;let hint=$('#calendar-hint');if(!hint){hint=document.createElement('p');hint.id='calendar-hint';hint.className='calendar-hint';$('#calendar-grid').before(hint);}hint.textContent=isAdmin()?'Tag anklicken, freie Uhrzeit auswählen und Termin anlegen.':'Klicke auf einen Termin, um die zugehörige Akte zu öffnen.';
 }
 
 function renderIntakes(){
@@ -236,10 +239,11 @@ function switchView(view){
   $('.sidebar').classList.remove('open'); $('#portal').classList.remove('menu-open');$('#menu-button').setAttribute('aria-expanded','false'); $('#portal-main').focus({preventScroll:true});
 }
 
-function dialog(title,kicker,content){ $('#dialog-title').textContent=title;$('#dialog-kicker').textContent=kicker;$('#dialog-content').innerHTML=content;$('#form-dialog').showModal(); }
+function dialog(title,kicker,content){ $('#form-dialog').classList.remove('appointment-dialog'); $('#dialog-title').textContent=title;$('#dialog-kicker').textContent=kicker;$('#dialog-content').innerHTML=content;$('#form-dialog').showModal(); }
 function clinicianOptions(selected=''){return state.users.filter(item=>item.active&&item.roles.some(role=>role==='psychologist')).map(item=>`<option value="${item.id}" ${item.id===selected?'selected':''}>${esc(item.displayName)} · ${esc(item.roles.map(role=>roleNames[role]).join(', '))}</option>`).join('')}
 
-function openForm(type){
+function openForm(type, options={}){
+  if(type==='appointment' && typeof openAppointmentPlanner==='function'){openAppointmentPlanner(options);return;}
   if(type==='patient')dialog('Patient:in anlegen','NEUE AKTE',`<form id="patient-form" class="form-grid"><label>Name<input name="name" required maxlength="120"></label><label>Sprache<select name="language">${['Deutsch','Dari','Farsi','Englisch','Türkisch','Russisch','Arabisch'].map(x=>`<option>${x}</option>`).join('')}</select></label><label>E-Mail<input name="email" type="email"></label><label>Telefon<input name="phone"></label><label>Altersgruppe<select name="ageGroup"><option value="erwachsen">Erwachsen</option><option value="minderjaehrig">Minderjährig</option></select></label><label>Versorgungsform<select name="careType"><option value="einzel">Einzel</option><option value="paar">Paar</option><option value="familie">Familie</option></select></label><label class="full">Vorinformation<textarea name="preInfo"></textarea></label><div class="dialog-actions"><button type="button" data-close>Abbrechen</button><button class="submit">Akte anlegen</button></div></form>`);
   if(type==='team')dialog('Teammitglied anlegen','TEAM & ROLLEN',`<form id="team-form" class="form-grid"><label>Name<input name="displayName" required></label><label>E-Mail<input name="email" type="email" required></label><label>Benutzername<input name="username" pattern="[A-Za-z0-9._-]{3,40}" maxlength="40" autocomplete="off" autocapitalize="none" spellcheck="false" required></label><label>Startpasswort (mind. 4 Zeichen)<input name="password" type="password" minlength="4" maxlength="256" autocomplete="new-password" required></label><label>Startpasswort wiederholen<input name="passwordConfirmation" type="password" minlength="4" maxlength="256" autocomplete="new-password" required></label><div class="full"><span class="field-label">Rollen</span><div class="check-row"><label><input type="checkbox" name="roles" value="psychologist"> Psycholog:in</label><label><input type="checkbox" name="roles" value="admin"> Admin</label></div></div><div class="dialog-actions"><button type="button" data-close>Abbrechen</button><button class="submit">Zugang anlegen</button></div></form>`);
   if(type==='appointment')dialog('Termin zuweisen','KALENDER',`<form id="appointment-form" class="form-grid"><label class="full">Patient:in<select name="patientId" required><option value="">Bitte auswählen</option>${state.patients.filter(p=>p.status==='active').map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('')}</select></label><label class="full">Behandler:in<select name="practitionerId" required><option value="">Bitte auswählen</option>${clinicianOptions()}</select></label><label>Beginn<input name="start" type="datetime-local" required></label><label>Dauer<select name="duration"><option value="15">15 Minuten</option><option value="50" selected>50 Minuten</option><option value="70">70 Minuten</option></select></label><label class="full">Terminart<input name="kind" value="Online-Sitzung" required></label><div class="dialog-actions"><button type="button" data-close>Abbrechen</button><button class="submit">Termin eintragen</button></div></form>`);
@@ -265,8 +269,8 @@ function openPatient(id, announce=true){
   $('#patient-drawer').classList.add('open');$('#patient-drawer').setAttribute('aria-hidden','false');$('#drawer-backdrop').hidden=false;if(announce)$('#drawer-close').focus();
 }
 
-function closePatient(){selectedPatientId=null;$('#patient-drawer').classList.remove('open');$('#patient-drawer').setAttribute('aria-hidden','true');$('#drawer-backdrop').hidden=true;}
-async function logout(){await api('/api/admin/logout',{method:'POST'}).catch(()=>{});state=null;$('#portal').hidden=true;$('#login-view').hidden=false;$('#admin-password').value='';}
+function closePatient(){selectedPatientId=null;$('#patient-drawer').classList.remove('open');$('#patient-drawer').setAttribute('aria-hidden','true');$('#drawer-backdrop').hidden=true;$('#drawer-content').replaceChildren();$('#drawer-title').textContent='';}
+async function logout(){portalSessionGeneration++;state=null;closePatient();if($('#form-dialog').open)$('#form-dialog').close();$('#dialog-content').replaceChildren();clearInterval(chatPollTimer);activeChatPeerId=null;$('#portal').hidden=true;$('#login-view').hidden=false;$('#admin-password').value='';await api('/api/admin/logout',{method:'POST'}).catch(()=>{});}
 
 $('#toggle-admin-password').addEventListener('click',()=>{const input=$('#admin-password');const visible=input.type==='password';input.type=visible?'text':'password';$('#toggle-admin-password').textContent=visible?'Passwort verbergen':'Passwort anzeigen';$('#toggle-admin-password').setAttribute('aria-pressed',String(visible));});
 $('#admin-password').addEventListener('keyup',event=>{$('#login-caps-lock').hidden=!event.getModifierState('CapsLock');});
