@@ -107,7 +107,7 @@ function renderCalendar(){
   let html=['Mo','Di','Mi','Do','Fr','Sa','So'].map(day=>`<div class="calendar-weekday">${day}</div>`).join('');
   for(let i=0;i<42;i++){
     const day=new Date(start); day.setDate(start.getDate()+i); const key=`${day.getFullYear()}-${String(day.getMonth()+1).padStart(2,'0')}-${String(day.getDate()).padStart(2,'0')}`;
-    const events=state.appointments.filter(item=>localDayKey(item.startsAt)===key);
+    const events=state.appointments.filter(item=>localDayKey(item.startsAt)===key).sort((a,b)=>a.startsAt-b.startsAt);
     const today=new Date(); const sameToday=day.toDateString()===today.toDateString();
     html += `<div class="calendar-day ${day.getMonth()!==month?'outside':''} ${sameToday?'today':''} ${isAdmin()?'bookable':''}" ${isAdmin()?`data-calendar-day="${key}"`:""}>${isAdmin()?`<button type="button" class="calendar-day-add" data-book-day="${key}" aria-label="Termin am ${esc(plannerLabel(key))} anlegen"><span class="day-number">${day.getDate()}</span><span class="day-plus" aria-hidden="true">+</span></button>`:`<span class="day-number">${day.getDate()}</span>`}${events.map(item=>{const p=patient(item.patientId);return `<button class="calendar-event ${item.status==='cancelled'?'cancelled':''}" data-patient="${esc(item.patientId)}" data-appointment="${esc(item.id)}"><b>${esc(timeOnly(item.startsAt))}</b> ${esc(p?.name||'Termin')}</button>`}).join('')}</div>`;
   }
