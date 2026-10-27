@@ -32,14 +32,15 @@ function refreshAppointmentPlanner(){
  $$('[data-planner-duration]',f).forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.plannerDuration===duration)));
  const time=f.elements.time.value;f.elements.start.value=day&&time?`${day}T${time}`:'';
  $('#planner-review-date').textContent=plannerLabel(day);$('#planner-review-patient').textContent=p?.name||'Noch auswählen';$('#planner-review-clinician').textContent=u?.displayName||'Noch auswählen';$('#planner-review-duration').textContent=duration+' Minuten';
- let mailNote=$('#planner-mail-note');if(!mailNote){mailNote=document.createElement('p');mailNote.id='planner-mail-note';mailNote.className='planner-help';$('#planner-review-duration').closest('dl').after(mailNote);}mailNote.textContent=p?.email?'Bestätigung und Terminänderungen gehen automatisch an '+p.email+'.':p?'Keine E-Mail-Adresse hinterlegt. Bitte vorab in der Akte ergänzen.':'';
+ let mailNote=$('#planner-mail-note');if(!mailNote){mailNote=document.createElement('p');mailNote.id='planner-mail-note';mailNote.className='planner-help';$('#planner-review-duration').closest('dl').after(mailNote);}const validMail=!!p&&/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(p.email||'');mailNote.innerHTML=validMail?'Bestätigung und Terminänderungen gehen automatisch an '+esc(p.email)+'.':p?'Bitte vor der Terminvergabe eine gültige E-Mail-Adresse ergänzen. <button type="button" class="text-btn" data-planner-patient-contact="'+esc(p.id)+'">Patientenakte öffnen</button>':'';
  $('#planner-review-time').textContent=time?`${time} – ${timeOnly(berlinEpoch(day+'T'+time)+duration*60)} Uhr`:'Uhrzeit auswählen';
- f.querySelector('button.submit').disabled=!!f.dataset.saving||!p||!u||!day||!time||(override&&f.elements.overrideReason.value.trim().length<5);
+ f.querySelector('button.submit').disabled=!!f.dataset.saving||!p||!validMail||!u||!day||!time||(override&&f.elements.overrideReason.value.trim().length<5);
 }
 document.addEventListener('click',async e=>{
  const day=e.target.closest('[data-book-day]')?.dataset.bookDay||e.target.closest('[data-calendar-day]')?.dataset.calendarDay;
  if(day&&isAdmin()&&!e.target.closest('[data-appointment],.calendar-event')){openForm('appointment',{day});return;}
  const b=e.target.closest('button');if(!b)return;const f=b.closest('.appointment-planner');
+ if(b.dataset.plannerPatientContact){$('#form-dialog').close();openPatient(b.dataset.plannerPatientContact);return;}
  if(b.dataset.plannerPerson){f.elements.patientId.value=b.dataset.plannerPerson;$('#planner-person-search').value='';f.elements.patientId.dispatchEvent(new Event('change',{bubbles:true}));renderPlannerPeople();return;}
  if(b.hasAttribute('data-planner-change-person')){f.elements.patientId.value='';$('#planner-person-search').disabled=false;renderPlannerPeople();refreshAppointmentPlanner();$('#planner-person-search').focus();return;}
  if(b.hasAttribute('data-planner-new-patient')){$('#form-dialog').close();openForm('patient');return;}
