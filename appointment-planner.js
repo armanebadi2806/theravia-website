@@ -10,7 +10,7 @@ function openAppointmentPlanner(options={}){
  $('#form-dialog').classList.add('appointment-dialog');const f=$('#appointment-form');f.practiceAppointment=seed?.id;f.plannerSeed=seed;
  // A disabled person selector on rescheduling must still be included in FormData.
  if(seed){const hidden=document.createElement('input');hidden.type='hidden';hidden.name='patientId';hidden.value=seed.patientId;f.append(hidden);f.querySelector('select[name=patientId]').removeAttribute('name');}
- renderPlannerPeople();updateAppointmentPackages(f);if(seed?.orderId)f.elements.orderId.value=seed.orderId;refreshAppointmentPlanner();
+ renderPlannerPeople();updateAppointmentPackages(f);if(seed?.orderId)f.elements.orderId.value=seed.orderId;refreshAppointmentPlanner();$('#form-dialog').scrollTop=0;
 }
 function renderPlannerPeople(){
  const f=$('#appointment-form');if(!f?.classList.contains('appointment-planner'))return;const input=$('#planner-person-search'),list=$('#planner-person-results'),selected=$('#planner-person-selected');if(!list)return;
